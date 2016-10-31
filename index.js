@@ -111,7 +111,14 @@ PanasonicTV.prototype.getChannel = function(callback) {
 }
 
 PanasonicTV.prototype.setChannel = function(channel, callback) {
-  this.tv.send("D" + channel);
+  //The TV takes only one digit at a time, up to three, so we need to send three digits one by one each time to change the channel
+  
+  var three_digit_channel = ("00" + channel).slice(-3); //three character format with leading zeroes
+  
+  for(var digit of three_digit_channel)
+  {
+    this.tv.send("D" + digit);
+  }
   callback();
 }
 
